@@ -9,6 +9,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { create } from 'domain';
+import { CreatePostDto } from './post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -31,7 +32,7 @@ export class PostsController {
   }
 
   @Post()
-  create(@Body() body) {
-    console.log(body);
+  create(@Body() post: CreatePostDto) {
+    console.log(post.title);
   }
 }
