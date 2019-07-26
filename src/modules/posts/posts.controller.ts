@@ -14,13 +14,16 @@ import {
   UsePipes,
   ValidationPipe,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { create } from 'domain';
 import { CreatePostDto } from './post.dto';
 import { DemoService } from './providers/demo/demo.service';
 import { DemoFilter } from '../../core/filters/demo.filter';
+import { DemoAuthGuard } from '../../core/guards/demo-auth.guard';
 
 @Controller('posts')
+@UseGuards(DemoAuthGuard)
 // @UseFilters(DemoFilter)
 export class PostsController {
   constructor(private readonly demoService: DemoService) {}
