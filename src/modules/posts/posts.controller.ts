@@ -7,10 +7,15 @@ import {
   Param,
   Post,
   Body,
+  HttpException,
+  HttpStatus,
+  ForbiddenException,
+  UseFilters,
 } from '@nestjs/common';
 import { create } from 'domain';
 import { CreatePostDto } from './post.dto';
 import { DemoService } from './providers/demo/demo.service';
+import { DemoFilter } from '../../core/filters/demo.filter';
 
 @Controller('posts')
 export class PostsController {
@@ -29,7 +34,10 @@ export class PostsController {
   }
 
   @Post()
+  @UseFilters(DemoFilter)
   create(@Body() post: CreatePostDto) {
-    this.demoService.create(post);
+    // throw new HttpException('没有权限！', HttpStatus.FORBIDDEN);
+    throw new ForbiddenException('没有权限forbidden');
+    // this.demoService.create(post);
   }
 }
