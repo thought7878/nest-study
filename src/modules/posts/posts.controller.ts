@@ -15,6 +15,7 @@ import {
   ValidationPipe,
   ParseIntPipe,
   UseGuards,
+  SetMetadata,
 } from '@nestjs/common';
 import { create } from 'domain';
 import { CreatePostDto } from './post.dto';
@@ -44,6 +45,7 @@ export class PostsController {
 
   @Post()
   @UsePipes(ValidationPipe)
+  @SetMetadata('roles', ['admin'])
   // @UseFilters(DemoFilter)
   create(@Body() post: CreatePostDto) {
     // throw new HttpException('没有权限！', HttpStatus.FORBIDDEN);
