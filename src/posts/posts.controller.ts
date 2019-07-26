@@ -10,18 +10,19 @@ import {
 } from '@nestjs/common';
 import { create } from 'domain';
 import { CreatePostDto } from './post.dto';
+import { DemoService } from './providers/demo/demo.service';
 
 @Controller('posts')
 export class PostsController {
-  @Get()
-  index(@Headers('authorization') headers) {
-    // console.log(request.ip, request.hostname, request.method);
-    console.log(headers);
+  private readonly demoService: DemoService;
 
-    return {
-      title: 'hello nest',
-      author: 'liang',
-    };
+  constructor(demoService: DemoService) {
+    this.demoService = demoService;
+  }
+
+  @Get()
+  index() {
+    return this.demoService.findAll();
   }
 
   @Get(':id')
@@ -33,6 +34,6 @@ export class PostsController {
 
   @Post()
   create(@Body() post: CreatePostDto) {
-    console.log(post.title);
+    this.demoService.create(post);
   }
 }
