@@ -13,6 +13,7 @@ import {
   UseFilters,
   UsePipes,
   ValidationPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { create } from 'domain';
 import { CreatePostDto } from './post.dto';
@@ -30,9 +31,11 @@ export class PostsController {
   }
 
   @Get(':id')
-  detail(@Param() params) {
+  detail(@Param('id', ParseIntPipe) id) {
+    console.log('id:', typeof id);
+
     return {
-      title: `post id: ${params.id}`,
+      title: `post id: ${id}`,
     };
   }
 
