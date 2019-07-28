@@ -27,6 +27,7 @@ import { Roles } from '../../core/decorators/roles.decorator';
 import { LoggingInterceptor } from '../../core/interceptors/logging.interceptor';
 import { TransformInterceptor } from '../../core/interceptors/transform.interceptor';
 import { ErrorInterceptor } from '../../core/interceptors/error/error.interceptor';
+import { User } from '../../core/decorators/user.decorator';
 
 @Controller('posts')
 // @UseGuards(DemoAuthGuard)
@@ -57,10 +58,11 @@ export class PostsController {
   // @SetMetadata('roles', ['admin'])
   @Roles('admin')
   // @UseFilters(DemoFilter)
-  create(@Body() post: CreatePostDto) {
+  create(@Body() post: CreatePostDto, @User('data param') user) {
     // throw new HttpException('没有权限！', HttpStatus.FORBIDDEN);
     // throw new ForbiddenException('没有权限forbidden');
-    console.log('create method');
+    // console.log('create method');
+    console.log(user);
 
     this.demoService.create(post);
   }
