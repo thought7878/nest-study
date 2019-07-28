@@ -12,7 +12,7 @@ export class DemoRolesGuard implements CanActivate {
     // console.log('handler:', context.getHandler());
     // console.log('class:', context.getClass());
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
-    console.log(roles);
+    console.log(`guard:${roles}`);
     if (!roles) {
       return true;
     }
