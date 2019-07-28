@@ -26,6 +26,7 @@ import { DemoAuthGuard } from '../../core/guards/demo-auth.guard';
 import { Roles } from '../../core/decorators/roles.decorator';
 import { LoggingInterceptor } from '../../core/interceptors/logging.interceptor';
 import { TransformInterceptor } from '../../core/interceptors/transform.interceptor';
+import { ErrorInterceptor } from '../../core/interceptors/error/error.interceptor';
 
 @Controller('posts')
 // @UseGuards(DemoAuthGuard)
@@ -35,9 +36,11 @@ export class PostsController {
   constructor(private readonly demoService: DemoService) {}
 
   @Get()
-  @UseInterceptors(TransformInterceptor)
+  // @UseInterceptors(TransformInterceptor)
+  @UseInterceptors(ErrorInterceptor)
   index() {
-    return this.demoService.findAll();
+    // return this.demoService.findAll();
+    throw new ForbiddenException();
   }
 
   @Get(':id')
