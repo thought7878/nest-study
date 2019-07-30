@@ -28,6 +28,7 @@ import { LoggingInterceptor } from '../../core/interceptors/logging.interceptor'
 import { TransformInterceptor } from '../../core/interceptors/transform.interceptor';
 import { ErrorInterceptor } from '../../core/interceptors/error/error.interceptor';
 import { User } from '../../core/decorators/user.decorator';
+import { DemoPipe } from '../../core/pipes/demo.pipe';
 
 @Controller('posts')
 // @UseGuards(DemoAuthGuard)
@@ -45,7 +46,7 @@ export class PostsController {
   }
 
   @Get(':id')
-  detail(@Param('id', ParseIntPipe) id) {
+  detail(@Param('id', ParseIntPipe, DemoPipe) id) {
     console.log('id:', typeof id);
 
     return {
@@ -58,7 +59,7 @@ export class PostsController {
   // @SetMetadata('roles', ['admin'])
   @Roles('admin')
   // @UseFilters(DemoFilter)
-  create(@Body() post: CreatePostDto, @User('data param') user) {
+  create(@Body() post: CreatePostDto, @User('data param', DemoPipe) user) {
     // throw new HttpException('没有权限！', HttpStatus.FORBIDDEN);
     // throw new ForbiddenException('没有权限forbidden');
     // console.log('create method');
