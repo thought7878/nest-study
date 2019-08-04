@@ -9,6 +9,7 @@ import { DemoRolesGuard } from './core/guards/demo-roles.guard';
 import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
 import { PostModule } from './modules/post/post.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from './modules/user/user.module';
     // PostsModule,
     PostModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
