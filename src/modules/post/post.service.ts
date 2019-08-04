@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
+import { PostDto } from './post.dto';
 
 @Injectable()
 export class PostService {
@@ -10,7 +11,7 @@ export class PostService {
     private readonly postRepository: Repository<Post>,
   ) {}
 
-  async insert(data) {
+  async insert(data: PostDto) {
     const entity = this.postRepository.create(data);
     await this.postRepository.save(entity);
     return entity;
@@ -25,7 +26,7 @@ export class PostService {
     return post;
   }
 
-  async update(id: string, data) {
+  async update(id: string, data: Partial<PostDto>) {
     const result = await this.postRepository.update(id, data);
     return result;
   }

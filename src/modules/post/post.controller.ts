@@ -8,13 +8,14 @@ import {
   Delete,
 } from '@nestjs/common';
 import { PostService } from './post.service';
+import { PostDto } from './post.dto';
 
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
-  async insert(@Body() data) {
+  async insert(@Body() data: PostDto) {
     return this.postService.insert(data);
   }
   @Get()
@@ -26,7 +27,7 @@ export class PostController {
     return await this.postService.findById(id);
   }
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data) {
+  async update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
     return await this.postService.update(id, data);
   }
   @Delete(':id')
