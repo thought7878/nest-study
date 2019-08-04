@@ -12,7 +12,7 @@ export class Post {
   id: number;
   @Column()
   title: string;
-  @Column('longtext')
+  @Column('longtext', { nullable: true })
   body: string;
   @CreateDateColumn()
   created: Date;
