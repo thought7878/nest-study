@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
   Entity,
   BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
@@ -24,7 +25,12 @@ export class User {
   updated: Date;
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 12);
+  }
+
+  async comparePassword(password: string) {
+    return await bcrypt.compare(password, this.password);
   }
 }

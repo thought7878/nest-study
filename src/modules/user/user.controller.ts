@@ -6,11 +6,13 @@ import {
   Param,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './user.dto';
+import { UserDto, UpdatePwdDto } from './user.dto';
 
 @Controller('user')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -21,9 +23,16 @@ export class UserController {
   }
 
   @Get(':id')
-  @UseInterceptors(ClassSerializerInterceptor)
   async findById(@Param('id') id) {
     const user = await this.userService.findById(id);
     return user;
+  }
+
+  @Put('password/:id')
+  async updatePassword(
+    @Param('id') id: string,
+    @Body() passwords: UpdatePwdDto,
+  ) {
+    return await this.userService.updatePassword(id, passwords);
   }
 }
