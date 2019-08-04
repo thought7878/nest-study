@@ -8,12 +8,14 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { DemoRolesGuard } from './core/guards/demo-roles.guard';
 import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
 import { PostModule } from './modules/post/post.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
     // PostsModule,
     PostModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
