@@ -7,6 +7,7 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -15,6 +16,7 @@ export class User {
   @Column('varchar', { unique: true })
   name: string;
   @Column()
+  @Exclude()
   password: string;
   @CreateDateColumn()
   created: Date;
