@@ -1,7 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
+import { LoginDto } from './login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly userService: UserService) {}
+
+  async login(data: LoginDto) {
+    const { name, password } = data;
+    const entity = await this.userService.findByName(name);
+    if (!entity) {
+      throw new UnauthorizedException('用户名错误！请重新输入用户名！');
+    }
+    if (!(await entity.comparePassword(password))) {
+      throw new UnauthorizedException('密码错误！请重新输入密码！');
+    }
+    return entity;
+  }
 }
