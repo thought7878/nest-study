@@ -7,6 +7,8 @@ import {
   BeforeInsert,
   BeforeUpdate,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
@@ -27,6 +29,9 @@ export class User {
   updated: Date;
   @OneToMany(type => Post, post => post.user)
   posts: Post[];
+  @ManyToMany(type => Post)
+  @JoinTable()
+  voted: Post[];
 
   @BeforeInsert()
   @BeforeUpdate()
