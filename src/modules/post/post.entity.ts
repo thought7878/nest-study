@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Post {
@@ -18,4 +20,6 @@ export class Post {
   created: Date;
   @UpdateDateColumn()
   updated: Date;
+  @ManyToOne(type => User, user => user.posts)
+  user: User;
 }
