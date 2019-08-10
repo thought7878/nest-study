@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
@@ -38,5 +39,9 @@ export class PostController {
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return await this.postService.delete(id);
+  }
+  @Post(':id/vote')
+  async vote(@Param('id', ParseIntPipe) id: number) {
+    console.log(typeof id);
   }
 }
