@@ -27,7 +27,9 @@ export class UserService {
   }
 
   async findById(id: string) {
-    const user = await this.userRepository.findOne(id);
+    const user = await this.userRepository.findOne(id, {
+      relations: ['posts'],
+    });
     if (!user) {
       throw new NotFoundException('没找到用户！');
     }
