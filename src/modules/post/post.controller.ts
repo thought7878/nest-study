@@ -45,4 +45,12 @@ export class PostController {
   async vote(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
     await this.postService.vote(id, user);
   }
+  @Delete(':id/vote')
+  @UseGuards(AuthGuard())
+  async unVote(
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: UserEntity,
+  ) {
+    await this.postService.unVote(id, user);
+  }
 }
