@@ -7,9 +7,14 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Put,
+  UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto, UpdatePwdDto } from './user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from '../../core/decorators/user.decorator';
+import { User as UserEntity } from './user.entity';
 
 @Controller('user')
 // @UseInterceptors(ClassSerializerInterceptor)
@@ -24,6 +29,8 @@ export class UserController {
 
   @Get(':id')
   async findById(@Param('id') id) {
+    console.log('findById');
+
     const user = await this.userService.findById(id);
     return user;
   }
@@ -34,5 +41,10 @@ export class UserController {
     @Body() passwords: UpdatePwdDto,
   ) {
     return await this.userService.updatePassword(id, passwords);
+  }
+
+  @Get('collect/:userId')
+  async readCollectedPosts(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.userService.readCollectedPosts(userId);
   }
 }
