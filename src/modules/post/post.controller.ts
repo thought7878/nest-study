@@ -53,4 +53,9 @@ export class PostController {
   ) {
     await this.postService.unVote(id, user);
   }
+
+  @Get(':id/collectors')
+  async readCollectedUsers(@Param('id', ParseIntPipe) id: number) {
+    return await this.postService.readCollectedUsers(id);
+  }
 }

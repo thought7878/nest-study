@@ -56,7 +56,7 @@ export class UserService {
 
   async readCollectedPosts(id: number) {
     return await this.userRepository.findOne(id, {
-      relations: ['voted', 'voted.user'],
+      relations: ['collectedPosts', 'collectedPosts.user'],
     });
   }
 }

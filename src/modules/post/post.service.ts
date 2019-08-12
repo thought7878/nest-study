@@ -39,15 +39,26 @@ export class PostService {
   async vote(id: number, user: User) {
     return await this.postRepository
       .createQueryBuilder()
-      .relation(User, 'voted')
+      .relation(User, 'collectedPosts')
       .of(user)
       .add(id);
   }
   async unVote(id: number, user: User) {
     return await this.postRepository
       .createQueryBuilder()
-      .relation(User, 'voted')
+      .relation(User, 'collectedPosts')
       .of(user)
       .remove({ id });
+  }
+
+  async readCollectedUsers(id: number) {
+    // return await this.postRepository.findOne(id, {
+    //   relations: ['collectedUsers'],
+    // });
+    return await this.postRepository
+      .createQueryBuilder()
+      .relation(Post, 'collectedUsers')
+      .of(id)
+      .loadMany();
   }
 }

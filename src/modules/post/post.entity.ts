@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 
@@ -22,4 +23,7 @@ export class Post {
   updated: Date;
   @ManyToOne(type => User, user => user.posts)
   user: User;
+
+  @ManyToMany(type => User, user => user.collectedPosts)
+  collectedUsers: User[];
 }

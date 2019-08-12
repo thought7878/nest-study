@@ -29,9 +29,9 @@ export class User {
   updated: Date;
   @OneToMany(type => Post, post => post.user)
   posts: Post[];
-  @ManyToMany(type => Post)
-  @JoinTable()
-  voted: Post[];
+  @ManyToMany(type => Post, post => post.collectedUsers)
+  @JoinTable({ name: 'users_collected_posts' })
+  collectedPosts: Post[];
 
   @BeforeInsert()
   @BeforeUpdate()
