@@ -18,8 +18,16 @@ export class PostService {
     return entity;
   }
 
-  async find() {
-    return await this.postRepository.find({ relations: ['user'] });
+  async find(categories: string) {
+    // return await this.postRepository.find({ relations: ['user', 'category'] });
+    const queryBuilder = this.postRepository.createQueryBuilder('post');
+    queryBuilder.leftJoinAndSelect('post.user', 'user');
+    queryBuilder.leftJoinAndSelect('post.category', 'category');
+    if (categories) {
+      queryBuilder.where('category.alias=:categories', { categories });
+    }
+    const entities = await queryBuilder.getMany();
+    return entities;
   }
 
   async findById(id: string) {

@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
@@ -25,8 +26,8 @@ export class PostController {
     return this.postService.insert(data, user);
   }
   @Get()
-  async find() {
-    return await this.postService.find();
+  async find(@Query('categories') categories: string) {
+    return await this.postService.find(categories);
   }
   @Get(':id')
   async findById(@Param('id') id: string) {
