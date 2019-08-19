@@ -18,13 +18,16 @@ export class PostService {
     return entity;
   }
 
-  async find(categories: string) {
+  async find(categories: string[]) {
     // return await this.postRepository.find({ relations: ['user', 'category'] });
+    // 'post':alias of table post in sql
     const queryBuilder = this.postRepository.createQueryBuilder('post');
+    // 'post.user':The first argument is the relation you want to load
+    // 'user':alias of table user in sql, the second argument is an alias you assign to this relation's table.
     queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
-    if (categories) {
-      queryBuilder.where('category.alias=:categories', { categories });
+    if (categories && categories.length > 0) {
+      queryBuilder.where('category.alias IN (:...categories)', { categories });
     }
     const entities = await queryBuilder.getMany();
     return entities;

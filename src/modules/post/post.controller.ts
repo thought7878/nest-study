@@ -15,6 +15,7 @@ import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
+import { QueryList } from '../../core/decorators/queryList.decorator';
 
 @Controller('post')
 export class PostController {
@@ -26,7 +27,7 @@ export class PostController {
     return this.postService.insert(data, user);
   }
   @Get()
-  async find(@Query('categories') categories: string) {
+  async find(@QueryList() categories: string[]) {
     return await this.postService.find(categories);
   }
   @Get(':id')
