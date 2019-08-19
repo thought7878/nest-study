@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   ManyToOne,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Category } from '../category/category.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Entity()
 export class Post {
@@ -30,4 +32,8 @@ export class Post {
 
   @ManyToOne(type => Category, category => category.posts)
   category: Category;
+
+  @ManyToMany(type => Tag, tag => tag.posts)
+  @JoinTable({ name: 'posts_tags' })
+  tags: Tag[];
 }

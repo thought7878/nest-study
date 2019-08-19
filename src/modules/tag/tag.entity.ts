@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Post } from '../post/post.entity';
 
 @Entity()
 export class Tag {
@@ -8,4 +9,7 @@ export class Tag {
   name: string;
   @Column({ unique: true })
   alias: string;
+
+  @ManyToMany(type => Post, post => post.tags)
+  posts: Post[];
 }
