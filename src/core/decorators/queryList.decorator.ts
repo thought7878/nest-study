@@ -1,9 +1,9 @@
 import { createParamDecorator } from '@nestjs/common';
 
 export const QueryList = createParamDecorator((data, req) => {
-  let { categories } = req.query;
-  if (categories) {
-    categories = categories.split('-');
+  let queryValues = req.query[data];
+  if (queryValues) {
+    queryValues = queryValues.split('-');
   }
-  return categories;
+  return queryValues;
 });

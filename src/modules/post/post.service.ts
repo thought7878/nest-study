@@ -55,7 +55,7 @@ export class PostService {
     //   .set(user);
   }
 
-  async find(categories: string[]) {
+  async find(categories: string[], tags: string[]) {
     // return await this.postRepository.find({ relations: ['user', 'category'] });
     // 'post':alias of table post in sql
     // createQueryBuilder('post')=createQueryBuilder().select('post').from(Post,'post')
@@ -64,8 +64,12 @@ export class PostService {
     // 'user':alias of table user in sql, the second argument is an alias you assign to this relation's table.
     queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
+    queryBuilder.leftJoinAndSelect('post.tags', 'tag');
     if (categories && categories.length > 0) {
       queryBuilder.where('category.alias IN (:...categories)', { categories });
+    }
+    if (tags && tags.length > 0) {
+      queryBuilder.andWhere('tag.name IN (:...tags)', { tags });
     }
     const entities = await queryBuilder.getMany();
     return entities;

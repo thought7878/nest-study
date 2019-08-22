@@ -27,8 +27,11 @@ export class PostController {
     return this.postService.insert(data, user);
   }
   @Get()
-  async find(@QueryList() categories: string[]) {
-    return await this.postService.find(categories);
+  async find(
+    @QueryList('categories') categories: string[],
+    @QueryList('tags') tags: string[],
+  ) {
+    return await this.postService.find(categories, tags);
   }
   @Get(':id')
   async findById(@Param('id') id: string) {
