@@ -4,23 +4,61 @@ import { Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { PostDto } from './post.dto';
 import { User } from '../user/user.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
   ) {}
 
+  async beforeTag(tags: Partial<Tag>[]) {
+    const _tags = tags.map(async item => {
+      const { id, name } = item;
+      if (id) {
+        const _tag = await this.tagRepository.findOne(id);
+        if (_tag) {
+          return _tag;
+        }
+        return;
+      }
+      if (name) {
+        const _tag = await this.tagRepository.findOne({ name });
+        if (_tag) {
+          return _tag;
+        }
+        return await this.tagRepository.save(item);
+      }
+    });
+    return Promise.all(_tags);
+  }
+
   async insert(data: PostDto, user: User) {
+    const { tags } = data;
+    if (tags) {
+      data.tags = await this.beforeTag(tags);
+    }
+
+    // repository
     const entity = this.postRepository.create(data);
     await this.postRepository.save({ ...entity, user });
     return entity;
+
+    // RelationQueryBuilder
+    // this.postRepository
+    //   .createQueryBuilder()
+    //   .relation(Post, 'user')
+    //   .of('id')
+    //   .set(user);
   }
 
   async find(categories: string[]) {
     // return await this.postRepository.find({ relations: ['user', 'category'] });
     // 'post':alias of table post in sql
+    // createQueryBuilder('post')=createQueryBuilder().select('post').from(Post,'post')
     const queryBuilder = this.postRepository.createQueryBuilder('post');
     // 'post.user':The first argument is the relation you want to load
     // 'user':alias of table user in sql, the second argument is an alias you assign to this relation's table.
