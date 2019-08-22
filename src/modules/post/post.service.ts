@@ -75,10 +75,26 @@ export class PostService {
     const post = await this.postRepository.findOne(id);
     return post;
   }
-
+  /**
+   * 更新tag与post的关系：
+   * 一、如果tags数组不为0
+   * 1.先删除所有post的tag关系；
+   * 2.重新把tags赋值给post，再保存
+   * 二、如果tags数组为0
+   * @param id postId
+   * @param data post properties
+   */
   async update(id: string, data: Partial<PostDto>) {
-    const result = await this.postRepository.update(id, data);
-    return result;
+    const { tags } = data;
+    delete data.tags;
+    await this.postRepository.update(id, data);
+    let entity = await this.postRepository.findOne(id, {
+      relations: ['category', 'tags'],
+    });
+    if (tags.length) {
+      entity.tags = await this.beforeTag(tags);
+    }
+    return this.postRepository.save(entity);
   }
   async delete(id: string) {
     const result = await this.postRepository.delete(id);
