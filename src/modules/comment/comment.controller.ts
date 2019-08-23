@@ -5,6 +5,8 @@ import {
   Param,
   ParseIntPipe,
   Body,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorators/user.decorator';
@@ -24,5 +26,23 @@ export class CommentController {
     @Body() comment: CommentDto,
   ) {
     return await this.commentService.create(postId, user, comment);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard())
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() comment: CommentDto,
+  ) {
+    return await this.commentService.update(id, comment);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  async delete(
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: UserEntity,
+  ) {
+    return await this.commentService.delete(id, user);
   }
 }

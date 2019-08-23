@@ -50,8 +50,13 @@ export class UserService {
     return await this.userRepository.save(entity);
   }
 
-  async findByName(name: string) {
-    return await this.userRepository.findOne({ name });
+  async findByName(name: string, password?: boolean) {
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    queryBuilder.where('user.name = :name', { name });
+    if (password) {
+      queryBuilder.addSelect('user.password');
+    }
+    return await queryBuilder.getOne();
   }
 
   async readCollectedPosts(id: number) {
