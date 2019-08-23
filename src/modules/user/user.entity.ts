@@ -21,7 +21,7 @@ export class User {
   id: number;
   @Column('varchar', { unique: true })
   name: string;
-  @Column()
+  @Column({ select: false })
   @Exclude()
   password: string;
   @CreateDateColumn()
