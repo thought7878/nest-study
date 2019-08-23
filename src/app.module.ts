@@ -1,3 +1,9 @@
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostsModule } from './modules/posts/posts.module';
@@ -10,13 +16,8 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
-import {
-  Module,
-  NestModule,
-  MiddlewareConsumer,
-  ClassSerializerInterceptor,
-} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommentModule } from './modules/comment/comment.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     AuthModule,
     CategoryModule,
     TagModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [
