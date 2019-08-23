@@ -7,6 +7,7 @@ import {
   Body,
   Put,
   Delete,
+  Get,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorators/user.decorator';
@@ -44,5 +45,15 @@ export class CommentController {
     @User() user: UserEntity,
   ) {
     return await this.commentService.delete(id, user);
+  }
+
+  @Get('post/:postId')
+  async readByPostId(@Param('postId', ParseIntPipe) id: number) {
+    return await this.commentService.readByPostId(id);
+  }
+
+  @Get('user/:userId')
+  async readByUserId(@Param('userId', ParseIntPipe) id: number) {
+    return await this.commentService.readByUserId(id);
   }
 }

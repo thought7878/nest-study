@@ -39,4 +39,28 @@ export class CommentService {
       throw new ForbiddenException();
     }
   }
+  /**
+   * 通过post id ，查询评论
+   * @param id post id
+   */
+  async readByPostId(id: number) {
+    return await this.commentRepository
+      .createQueryBuilder('comment')
+      .leftJoinAndSelect('comment.user', 'user')
+      .leftJoin('comment.post', 'post')
+      .where('post.id = :id', { id })
+      .getMany();
+  }
+  /**
+   * 通过 user id ，查询评论
+   * @param id user id
+   */
+  async readByUserId(id: number) {
+    return await this.commentRepository
+      .createQueryBuilder('comment')
+      .leftJoin('comment.user', 'user')
+      //   .leftJoinAndSelect('comment.post', 'post')
+      .where('user.id = :id', { id })
+      .getMany();
+  }
 }
