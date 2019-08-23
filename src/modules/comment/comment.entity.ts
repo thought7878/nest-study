@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { Post } from '../post/post.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Comment {
@@ -18,4 +21,10 @@ export class Comment {
   created: Date;
   @UpdateDateColumn()
   updated: Date;
+  // 跟文章的关系
+  @ManyToOne(type => Post, post => post.comments, { nullable: false })
+  post: Post;
+  // 跟用户的关系
+  @ManyToOne(type => User, user => user.comments, { nullable: false })
+  user: User;
 }

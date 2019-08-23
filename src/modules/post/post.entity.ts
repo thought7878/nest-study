@@ -7,10 +7,12 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Category } from '../category/category.entity';
 import { Tag } from '../tag/tag.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Entity()
 export class Post {
@@ -32,8 +34,11 @@ export class Post {
 
   @ManyToOne(type => Category, category => category.posts)
   category: Category;
-
+  // Tag多对多关系
   @ManyToMany(type => Tag, tag => tag.posts)
   @JoinTable({ name: 'posts_tags' })
   tags: Tag[];
+  // Comment的一对多关系
+  @OneToMany(type => Comment, comment => comment.post)
+  comments: Comment[];
 }
