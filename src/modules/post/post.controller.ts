@@ -9,6 +9,7 @@ import {
   UseGuards,
   ParseIntPipe,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
@@ -17,6 +18,7 @@ import { User } from '../../core/decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { QueryList } from '../../core/decorators/queryList.decorator';
 import { QueryPagination } from '../../core/decorators/queryPagination.decorator';
+import { TransformPageTotalInterceptor } from '../../core/interceptors/transform-page-total.interceptor';
 
 @Controller('post')
 export class PostController {
@@ -28,6 +30,7 @@ export class PostController {
     return this.postService.insert(data, user);
   }
   @Get()
+  @UseInterceptors(TransformPageTotalInterceptor)
   async find(
     @QueryList('categories') categories: string[],
     @QueryList('tags') tags: string[],
