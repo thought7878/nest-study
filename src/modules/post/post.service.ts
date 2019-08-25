@@ -74,7 +74,7 @@ export class PostService {
     queryBuilder
       .take(pagination.limit)
       .skip((pagination.page - 1) * pagination.limit);
-    const entities = await queryBuilder.getMany();
+    const entities = await queryBuilder.getManyAndCount();
     return entities;
   }
 
