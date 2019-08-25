@@ -55,7 +55,7 @@ export class PostService {
     //   .set(user);
   }
 
-  async find(categories: string[], tags: string[], pagination) {
+  async find(categories: string[], tags: string[], pagination, orderOptions) {
     // return await this.postRepository.find({ relations: ['user', 'category'] });
     // 'post':alias of table post in sql
     // createQueryBuilder('post')=createQueryBuilder().select('post').from(Post,'post')
@@ -72,8 +72,11 @@ export class PostService {
       queryBuilder.andWhere('tag.name IN (:...tags)', { tags });
     }
     queryBuilder
-      .take(pagination.limit)
-      .skip((pagination.page - 1) * pagination.limit);
+      .skip((pagination.page - 1) * pagination.limit)
+      .take(pagination.limit);
+    queryBuilder.orderBy({
+      [`post.${orderOptions.orderProperty}`]: orderOptions.orderValue,
+    });
     const entities = await queryBuilder.getManyAndCount();
     return entities;
   }

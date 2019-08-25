@@ -19,6 +19,7 @@ import { User as UserEntity } from '../user/user.entity';
 import { QueryList } from '../../core/decorators/queryList.decorator';
 import { QueryPagination } from '../../core/decorators/queryPagination.decorator';
 import { TransformPageTotalInterceptor } from '../../core/interceptors/transform-page-total.interceptor';
+import { QueryOrder } from '../../core/decorators/query-order.decorator';
 
 @Controller('post')
 export class PostController {
@@ -35,8 +36,14 @@ export class PostController {
     @QueryList('categories') categories: string[],
     @QueryList('tags') tags: string[],
     @QueryPagination({ page: 1, limit: 1 }) pagination,
+    @QueryOrder({ orderProperty: 'created', orderValue: 'asc' }) orderOptions,
   ) {
-    return await this.postService.find(categories, tags, pagination);
+    return await this.postService.find(
+      categories,
+      tags,
+      pagination,
+      orderOptions,
+    );
   }
   @Get(':id')
   async findById(@Param('id') id: string) {
