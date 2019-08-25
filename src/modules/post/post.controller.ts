@@ -16,6 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorators/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { QueryList } from '../../core/decorators/queryList.decorator';
+import { QueryPagination } from '../../core/decorators/queryPagination.decorator';
 
 @Controller('post')
 export class PostController {
@@ -30,8 +31,9 @@ export class PostController {
   async find(
     @QueryList('categories') categories: string[],
     @QueryList('tags') tags: string[],
+    @QueryPagination() pagination,
   ) {
-    return await this.postService.find(categories, tags);
+    return await this.postService.find(categories, tags, pagination);
   }
   @Get(':id')
   async findById(@Param('id') id: string) {
