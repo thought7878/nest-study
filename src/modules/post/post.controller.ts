@@ -31,7 +31,7 @@ export class PostController {
   async find(
     @QueryList('categories') categories: string[],
     @QueryList('tags') tags: string[],
-    @QueryPagination() pagination,
+    @QueryPagination({ page: 1, limit: 1 }) pagination,
   ) {
     return await this.postService.find(categories, tags, pagination);
   }
